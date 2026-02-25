@@ -52,13 +52,13 @@ const VenueSlider = () => {
                 zIndex: -1,
                 overflow: 'hidden'
             }}>
-                <AnimatePresence mode="wait">
+                <AnimatePresence>
                     <motion.div
                         key={currentVenue.image}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 1 }}
+                        transition={{ duration: 1.2, ease: "easeInOut" }}
                         style={{
                             position: 'absolute',
                             top: 0,
@@ -68,11 +68,11 @@ const VenueSlider = () => {
                             backgroundImage: `url(${currentVenue.image})`,
                             backgroundSize: 'cover',
                             backgroundPosition: 'center',
-                            filter: 'blur(30px) brightness(0.8)'
+                            filter: 'blur(35px) brightness(0.8)'
                         }}
                     />
                 </AnimatePresence>
-                {/* Overlay for better contrast */}
+                {/* Fixed White Overlay as requested */}
                 <div style={{
                     position: 'absolute',
                     top: 0,
