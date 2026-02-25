@@ -8,6 +8,7 @@ import BookVenue from './pages/BookVenue';
 import CreateEvent from './pages/CreateEvent';
 import Admin from './pages/Admin';
 import Profile from './pages/Profile';
+import Contact from './pages/Contact';
 import './index.css';
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
         <Route path="/create-event" element={<CreateEvent />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/splash" element={<Splash />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
