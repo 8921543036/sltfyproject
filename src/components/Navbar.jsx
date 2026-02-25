@@ -44,7 +44,11 @@ const Navbar = () => {
                 justifyContent: 'space-between',
                 padding: '0 30px',
                 zIndex: 1000,
-                boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
+                backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                backdropFilter: 'blur(20px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
             }}>
                 <Link to="/" style={{ textDecoration: 'none' }}>
                     <h2 style={{ fontSize: '1.5rem', fontWeight: '800', margin: 0, color: '#000' }}>Slotify</h2>
@@ -55,11 +59,11 @@ const Navbar = () => {
                     <Link to="/contact" className="nav-link">Contact</Link>
                     <Link to="/book" className="nav-link">Book Venue</Link>
                     <Link to="/admin" className="nav-link">Admin</Link>
-                    <Search size={20} style={{ cursor: 'pointer', color: '#666' }} />
+                    <Search size={20} style={{ cursor: 'pointer', color: '#333' }} />
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', position: 'relative' }}>
                         {user && (
-                            <span style={{ fontSize: '0.9rem', color: '#666', fontWeight: '500' }}>
+                            <span style={{ fontSize: '0.9rem', color: '#333', fontWeight: '600' }}>
                                 {user.email}
                             </span>
                         )}

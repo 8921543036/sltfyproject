@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const venues = [
     {
@@ -30,6 +31,7 @@ const venues = [
 
 const VenueSlider = () => {
     const [index, setIndex] = useState(0);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -111,14 +113,18 @@ const VenueSlider = () => {
                             <p style={{ fontSize: '1.1rem', color: '#555', maxWidth: '400px', marginBottom: '30px', fontWeight: '500' }}>
                                 {currentVenue.description}
                             </p>
-                            <button style={{
-                                padding: '16px 40px',
-                                backgroundColor: '#000',
-                                color: '#fff',
-                                fontSize: '1rem',
-                                borderRadius: '50px',
-                                boxShadow: '0 10px 20px rgba(0,0,0,0.1)'
-                            }}>
+                            <button
+                                onClick={() => navigate('/book')}
+                                style={{
+                                    padding: '16px 40px',
+                                    backgroundColor: '#000',
+                                    color: '#fff',
+                                    fontSize: '1rem',
+                                    borderRadius: '50px',
+                                    boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
+                                    cursor: 'pointer'
+                                }}
+                            >
                                 Book Venue
                             </button>
                         </motion.div>
