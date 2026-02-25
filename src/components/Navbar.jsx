@@ -50,15 +50,35 @@ const Navbar = () => {
                 border: '1px solid rgba(255, 255, 255, 0.3)',
                 boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
             }}>
-                <Link to="/" style={{ textDecoration: 'none' }}>
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: '800', margin: 0, color: '#000' }}>Slotify</h2>
-                </Link>
+                {/* Left Section: Logo */}
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+                    <Link to="/" style={{ textDecoration: 'none' }}>
+                        <h2 style={{ fontSize: '1.5rem', fontWeight: '800', margin: 0, color: '#000' }}>Slotify</h2>
+                    </Link>
+                </div>
 
-                <div style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
+                {/* Center Section: Main Nav Links */}
+                <div style={{
+                    flex: 2,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '40px',
+                    alignItems: 'center'
+                }}>
                     <Link to="/" className="nav-link">Home</Link>
                     <Link to="/contact" className="nav-link">Contact</Link>
                     <Link to="/book" className="nav-link">Book Venue</Link>
-                    <Link to="/admin" className="nav-link">Admin</Link>
+                </div>
+
+                {/* Right Section: Actions */}
+                <div style={{
+                    flex: 1,
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    gap: '20px',
+                    alignItems: 'center'
+                }}>
+                    <Link to="/admin" className="nav-link" style={{ marginRight: '10px' }}>Admin</Link>
                     <Search size={20} style={{ cursor: 'pointer', color: '#333' }} />
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', position: 'relative' }}>
