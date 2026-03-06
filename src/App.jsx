@@ -9,6 +9,8 @@ import CreateEvent from './pages/CreateEvent';
 import Admin from './pages/Admin';
 import Profile from './pages/Profile';
 import Contact from './pages/Contact';
+import Venues from './pages/Venues';
+import AdminLogin from './pages/AdminLogin';
 import './index.css';
 
 function App() {
@@ -51,9 +53,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/book" element={<BookVenue />} />
         <Route path="/create-event" element={<CreateEvent />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/venues" element={<Venues />} />
         <Route path="/splash" element={<Splash />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

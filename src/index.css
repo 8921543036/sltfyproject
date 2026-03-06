@@ -2,7 +2,7 @@
   --primary: #000000;
   --secondary: #ffffff;
   --accent: #3b82f6;
-  --background: #f8fafc;
+  --background: transparent;
   --text: #1e293b;
   --text-muted: #64748b;
   --card-bg: rgba(255, 255, 255, 0.8);
@@ -25,7 +25,10 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-weight: 700;
   color: var(--primary);
 }
@@ -66,13 +69,25 @@ input:focus {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes spinner {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-fade-in {

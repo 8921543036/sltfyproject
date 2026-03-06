@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Search, User, LogOut } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../supabase/supabaseClient';
 import AuthModal from './AuthModal';
@@ -66,8 +66,31 @@ const Navbar = () => {
                     alignItems: 'center'
                 }}>
                     <Link to="/" className="nav-link">Home</Link>
+                    <a
+                        href="#services"
+                        className="nav-link"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            if (window.location.pathname !== '/') {
+                                navigate('/');
+                                setTimeout(() => {
+                                    const element = document.getElementById('services');
+                                    if (element) {
+                                        element.scrollIntoView({ behavior: 'smooth' });
+                                    }
+                                }, 100);
+                            } else {
+                                const element = document.getElementById('services');
+                                if (element) {
+                                    element.scrollIntoView({ behavior: 'smooth' });
+                                }
+                            }
+                        }}
+                    >
+                        Services
+                    </a>
+                    <Link to="/venues" className="nav-link">Venues</Link>
                     <Link to="/contact" className="nav-link">Contact</Link>
-                    <Link to="/book" className="nav-link">Book Venue</Link>
                 </div>
 
                 {/* Right Section: Actions */}
@@ -78,9 +101,6 @@ const Navbar = () => {
                     gap: '20px',
                     alignItems: 'center'
                 }}>
-                    <Link to="/admin" className="nav-link" style={{ marginRight: '10px' }}>Admin</Link>
-                    <Search size={20} style={{ cursor: 'pointer', color: '#333' }} />
-
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', position: 'relative' }}>
                         {user && (
                             <span style={{ fontSize: '0.9rem', color: '#333', fontWeight: '600' }}>

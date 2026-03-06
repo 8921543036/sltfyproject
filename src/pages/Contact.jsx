@@ -1,9 +1,79 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Loader2 } from 'lucide-react';
+import { supabase } from '../supabase/supabaseClient';
 
 const Contact = () => {
+    const [contactInfo, setContactInfo] = useState({
+        email: 'support@slotify.com',
+        phone: '+91 98765 43210',
+        address: 'Main Campus, Slotify University'
+    });
+    const [formData, setFormData] = useState({
+        full_name: '',
+        email: '',
+        subject: '',
+        message: ''
+    });
+    const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(true);
+
+    useEffect(() => {
+        fetchContactInfo();
+    }, []);
+
+    const fetchContactInfo = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('contact_info')
+                .select('*')
+                .single();
+
+            if (data) {
+                setContactInfo(data);
+            }
+        } catch (error) {
+            console.error('Error fetching contact info:', error);
+        } finally {
+            setFetching(false);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            const { error } = await supabase
+                .from('contact_submissions')
+                .insert([formData]);
+
+            if (error) {
+                console.error("Supabase insert error:", error);
+                throw error;
+            }
+
+            alert('Message sent successfully!');
+            setFormData({
+                full_name: '',
+                email: '',
+                subject: '',
+                message: ''
+            });
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert(`Failed to send message: ${error.message || 'Unknown error. Please try again.'}`);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="container" style={{ minHeight: '100vh', paddingTop: '120px' }}>
             <Navbar />
@@ -62,7 +132,9 @@ const Contact = () => {
                         </div>
                         <div>
                             <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Email Us</h3>
-                            <p style={{ margin: 0, color: '#666' }}>support@slotify.com</p>
+                            <p style={{ margin: 0, color: '#666' }}>
+                                {fetching ? 'Loading...' : contactInfo.email}
+                            </p>
                         </div>
                     </div>
 
@@ -81,7 +153,9 @@ const Contact = () => {
                         </div>
                         <div>
                             <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Call Us</h3>
-                            <p style={{ margin: 0, color: '#666' }}>+91 98765 43210</p>
+                            <p style={{ margin: 0, color: '#666' }}>
+                                {fetching ? 'Loading...' : contactInfo.phone}
+                            </p>
                         </div>
                     </div>
 
@@ -100,7 +174,9 @@ const Contact = () => {
                         </div>
                         <div>
                             <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Visit Us</h3>
-                            <p style={{ margin: 0, color: '#666' }}>Main Campus, Slotify University</p>
+                            <p style={{ margin: 0, color: '#666' }}>
+                                {fetching ? 'Loading...' : contactInfo.address}
+                            </p>
                         </div>
                     </div>
                 </motion.div>
@@ -117,12 +193,16 @@ const Contact = () => {
                         boxShadow: '0 20px 40px rgba(0,0,0,0.05)'
                     }}
                 >
-                    <form style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 <label style={{ fontWeight: '600', fontSize: '0.9rem' }}>Full Name</label>
                                 <input
                                     type="text"
+                                    name="full_name"
+                                    value={formData.full_name}
+                                    onChange={handleInputChange}
+                                    required
                                     placeholder="John Doe"
                                     style={{
                                         padding: '12px 20px',
@@ -137,6 +217,10 @@ const Contact = () => {
                                 <label style={{ fontWeight: '600', fontSize: '0.9rem' }}>Email Address</label>
                                 <input
                                     type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    required
                                     placeholder="john@example.com"
                                     style={{
                                         padding: '12px 20px',
@@ -152,6 +236,9 @@ const Contact = () => {
                             <label style={{ fontWeight: '600', fontSize: '0.9rem' }}>Subject</label>
                             <input
                                 type="text"
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleInputChange}
                                 placeholder="How can we help?"
                                 style={{
                                     padding: '12px 20px',
@@ -165,6 +252,10 @@ const Contact = () => {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             <label style={{ fontWeight: '600', fontSize: '0.9rem' }}>Message</label>
                             <textarea
+                                name="message"
+                                value={formData.message}
+                                onChange={handleInputChange}
+                                required
                                 placeholder="Tell us more about your inquiry..."
                                 rows="4"
                                 style={{
@@ -177,22 +268,30 @@ const Contact = () => {
                                 }}
                             ></textarea>
                         </div>
-                        <button style={{
-                            padding: '16px',
-                            backgroundColor: '#000',
-                            color: '#fff',
-                            borderRadius: '12px',
-                            fontWeight: '600',
-                            border: 'none',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '10px',
-                            marginTop: '10px',
-                            transition: 'opacity 0.2s'
-                        }}>
-                            Send Message <Send size={18} />
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            style={{
+                                padding: '16px',
+                                backgroundColor: '#000',
+                                color: '#fff',
+                                borderRadius: '12px',
+                                fontWeight: '600',
+                                border: 'none',
+                                cursor: loading ? 'not-allowed' : 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '10px',
+                                marginTop: '10px',
+                                transition: 'opacity 0.2s',
+                                opacity: loading ? 0.7 : 1
+                            }}>
+                            {loading ? (
+                                <>Sending... <Loader2 className="animate-spin" size={18} /></>
+                            ) : (
+                                <>Send Message <Send size={18} /></>
+                            )}
                         </button>
                     </form>
                 </motion.div>
