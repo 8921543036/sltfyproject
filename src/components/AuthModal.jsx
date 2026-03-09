@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { X, Mail, Lock, User, ArrowRight, Hash, Eye, EyeOff } from 'lucide-react';
 import { supabase } from '../supabase/supabaseClient';
 
 const AuthModal = ({ isOpen, onClose }) => {
@@ -8,8 +8,12 @@ const AuthModal = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [admissionNumber, setAdmissionNumber] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleAuth = async (e) => {
         e.preventDefault();
@@ -21,10 +25,15 @@ const AuthModal = ({ isOpen, onClose }) => {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
             } else {
+                if (password !== confirmPassword) {
+                    setError("Passwords do not match");
+                    setLoading(false);
+                    return;
+                }
                 const { error } = await supabase.auth.signUp({
                     email,
                     password,
-                    options: { data: { name } }
+                    options: { data: { name, admission_number: admissionNumber } }
                 });
                 if (error) throw error;
             }
@@ -98,24 +107,37 @@ const AuthModal = ({ isOpen, onClose }) => {
 
                         <form onSubmit={handleAuth} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                             {!isLogin && (
-                                <div style={{ position: 'relative' }}>
-                                    <User size={18} style={{ position: 'absolute', left: '14px', top: '15px', color: '#94a3b8' }} />
-                                    <input
-                                        style={{ paddingLeft: '45px' }}
-                                        type="text"
-                                        placeholder="Full Name"
-                                        required
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                    />
-                                </div>
+                                <>
+                                    <div style={{ position: 'relative' }}>
+                                        <User size={18} style={{ position: 'absolute', left: '14px', top: '15px', color: '#94a3b8' }} />
+                                        <input
+                                            style={{ paddingLeft: '45px' }}
+                                            type="text"
+                                            placeholder="Full Name"
+                                            required
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                        />
+                                    </div>
+                                    <div style={{ position: 'relative' }}>
+                                        <Hash size={18} style={{ position: 'absolute', left: '14px', top: '15px', color: '#94a3b8' }} />
+                                        <input
+                                            style={{ paddingLeft: '45px' }}
+                                            type="text"
+                                            placeholder="Admission Number"
+                                            required
+                                            value={admissionNumber}
+                                            onChange={(e) => setAdmissionNumber(e.target.value)}
+                                        />
+                                    </div>
+                                </>
                             )}
                             <div style={{ position: 'relative' }}>
                                 <Mail size={18} style={{ position: 'absolute', left: '14px', top: '15px', color: '#94a3b8' }} />
                                 <input
                                     style={{ paddingLeft: '45px' }}
                                     type="email"
-                                    placeholder="College Email"
+                                    placeholder="Your Email"
                                     required
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -124,14 +146,39 @@ const AuthModal = ({ isOpen, onClose }) => {
                             <div style={{ position: 'relative' }}>
                                 <Lock size={18} style={{ position: 'absolute', left: '14px', top: '15px', color: '#94a3b8' }} />
                                 <input
-                                    style={{ paddingLeft: '45px' }}
-                                    type="password"
+                                    style={{ paddingLeft: '45px', paddingRight: '45px' }}
+                                    type={showPassword ? "text" : "password"}
                                     placeholder="Password"
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
+                                <div
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    style={{ position: 'absolute', right: '14px', top: '15px', color: '#94a3b8', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </div>
                             </div>
+                            {!isLogin && (
+                                <div style={{ position: 'relative' }}>
+                                    <Lock size={18} style={{ position: 'absolute', left: '14px', top: '15px', color: '#94a3b8' }} />
+                                    <input
+                                        style={{ paddingLeft: '45px', paddingRight: '45px' }}
+                                        type={showConfirmPassword ? "text" : "password"}
+                                        placeholder="Confirm Password"
+                                        required
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                    />
+                                    <div
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        style={{ position: 'absolute', right: '14px', top: '15px', color: '#94a3b8', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                    >
+                                        {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    </div>
+                                </div>
+                            )}
 
                             {error && <p style={{ color: '#ef4444', fontSize: '0.85rem', textAlign: 'center' }}>{error}</p>}
 

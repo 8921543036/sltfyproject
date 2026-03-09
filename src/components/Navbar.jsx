@@ -102,11 +102,6 @@ const Navbar = () => {
                     alignItems: 'center'
                 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', position: 'relative' }}>
-                        {user && (
-                            <span style={{ fontSize: '0.9rem', color: '#333', fontWeight: '600' }}>
-                                {user.email}
-                            </span>
-                        )}
                         <div
                             onClick={() => user ? setShowDropdown(!showDropdown) : setIsAuthModalOpen(true)}
                             style={{
