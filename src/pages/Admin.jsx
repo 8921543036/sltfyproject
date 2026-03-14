@@ -113,7 +113,7 @@ const Admin = () => {
             <Navbar />
 
             <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '40px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '40px', flexWrap: 'wrap', gap: '20px' }}>
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
                             <div style={{ padding: '8px', backgroundColor: '#000', borderRadius: '12px' }}>
@@ -124,7 +124,7 @@ const Admin = () => {
                         <p style={{ color: '#64748b', fontSize: '1.1rem' }}>Manage venue bookings, event requests, and user messages</p>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
                         <button
                             onClick={() => {
                                 localStorage.removeItem('isAdmin');
@@ -148,7 +148,7 @@ const Admin = () => {
                         </button>
 
                         {activeTab === 'bookings' && (
-                            <div style={{ display: 'flex', gap: '12px' }}>
+                            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                                 {['all', 'pending', 'accepted', 'rejected'].map(f => (
                                     <button
                                         key={f}
@@ -244,7 +244,7 @@ const Admin = () => {
                                 <p style={{ color: '#64748b' }}>No bookings found matching your criteria.</p>
                             </div>
                         ) : (
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: '24px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 380px), 1fr))', gap: '24px' }}>
                                 <AnimatePresence>
                                     {filteredBookings.map((booking) => (
                                         <motion.div
@@ -361,7 +361,7 @@ const Admin = () => {
                                 <p style={{ color: '#64748b' }}>No messages found.</p>
                             </div>
                         ) : (
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: '24px' }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 400px), 1fr))', gap: '24px' }}>
                                 {messages.map((msg) => (
                                     <motion.div
                                         key={msg.id}

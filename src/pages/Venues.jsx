@@ -55,7 +55,7 @@ const Venues = () => {
                 margin: '0 auto',
                 padding: '0 20px 80px',
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 350px), 1fr))',
                 gap: '30px'
             }}>
                 {venues.map((venue, index) => (

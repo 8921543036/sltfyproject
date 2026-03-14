@@ -68,7 +68,7 @@ const VenueSlider = () => {
                 position: 'relative',
                 zIndex: 1
             }}>
-                <div style={{
+                <div className="slider-wrapper" style={{
                     display: 'flex',
                     alignItems: 'flex-start',
                     justifyContent: 'space-between',
@@ -76,13 +76,14 @@ const VenueSlider = () => {
                     gap: '40px',
                     paddingTop: '80px'
                 }}>
-                    <div style={{ flex: 1, paddingLeft: '60px' }}>
+                    <div className="slider-text-area" style={{ flex: 1, paddingLeft: '60px' }}>
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={currentVenue.name}
                                 initial="initial"
                                 animate="animate"
                                 exit="exit"
+                                style={{ display: 'flex', flexDirection: 'column', alignItems: 'inherit' }}
                             >
                                 <motion.h1
                                     initial={{ opacity: 0, x: -50 }}
@@ -155,7 +156,7 @@ const VenueSlider = () => {
                     </div>
                 </div>
 
-                <div style={{ flex: '0 0 40%', position: 'relative', top: '0px', left: '-30px', height: '400px' }}>
+                <div className="slider-image-area" style={{ flex: '0 0 40%', position: 'relative', top: '0px', left: '-30px', height: '400px' }}>
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={currentVenue.image}

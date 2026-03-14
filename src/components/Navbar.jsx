@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { User, LogOut } from 'lucide-react';
+import { User, LogOut, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '../supabase/supabaseClient';
 import AuthModal from './AuthModal';
@@ -9,6 +9,7 @@ const Navbar = () => {
     const [user, setUser] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,7 +31,7 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="glass" style={{
+            <nav className="glass nav-glass" style={{
                 position: 'fixed',
                 top: '20px',
                 left: '50%',
@@ -58,7 +59,7 @@ const Navbar = () => {
                 </div>
 
                 {/* Center Section: Main Nav Links */}
-                <div style={{
+                <div className="nav-center" style={{
                     flex: 2,
                     display: 'flex',
                     justifyContent: 'center',
@@ -210,6 +211,50 @@ const Navbar = () => {
                         color: #000;
                     }
                 `}</style>
+
+                <button
+                    className="mobile-menu-btn"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                >
+                    {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+
+                <AnimatePresence>
+                    {isMobileMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            className="mobile-menu"
+                        >
+                            <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+                            <a href="#services" onClick={(e) => {
+                                e.preventDefault();
+                                setIsMobileMenuOpen(false);
+                                if (window.location.pathname !== '/') {
+                                    navigate('/');
+                                    setTimeout(() => {
+                                        const element = document.getElementById('services');
+                                        if (element) {
+                                            element.scrollIntoView({ behavior: 'smooth' });
+                                        }
+                                    }, 100);
+                                } else {
+                                    const element = document.getElementById('services');
+                                    if (element) {
+                                        element.scrollIntoView({ behavior: 'smooth' });
+                                    }
+                                }
+                            }}>Services</a>
+                            <Link to="/venues" onClick={() => setIsMobileMenuOpen(false)}>Venues</Link>
+                            <a href="https://connect-letterpad.vercel.app/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)}>Permission Letter</a>
+                            <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
+                            {localStorage.getItem('isAdmin') === 'true' && (
+                                <Link to="/admin" style={{ color: '#ff4444' }} onClick={() => setIsMobileMenuOpen(false)}>Admin</Link>
+                            )}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </nav>
 
             <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />

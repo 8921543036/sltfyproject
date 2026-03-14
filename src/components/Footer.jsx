@@ -22,7 +22,7 @@ const Footer = () => {
                     padding: '60px',
                     border: '1px solid rgba(255, 255, 255, 0.3)',
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
                     gap: '40px'
                 }}>
                     {/* Brand Info */}

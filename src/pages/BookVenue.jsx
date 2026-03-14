@@ -253,7 +253,7 @@ const BookVenue = () => {
 
             <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 20px' }}>
                 {/* Header Section */}
-                <div style={{ display: 'flex', gap: '40px', alignItems: 'center', marginBottom: '40px' }}>
+                <div style={{ display: 'flex', gap: '40px', alignItems: 'center', marginBottom: '40px', flexWrap: 'wrap' }}>
                     <div style={{ width: '150px', height: '180px', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
                         <img src={currentVenue.image} alt={currentVenue.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
@@ -276,11 +276,11 @@ const BookVenue = () => {
 
                 {/* Date Selection Section */}
                 <div style={{ marginBottom: '50px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '30px', marginBottom: '40px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '30px', marginBottom: '40px', flexWrap: 'wrap' }}>
                         <div style={{ padding: '30px 20px', backgroundColor: '#e2e8f0', borderRadius: '32px', textAlign: 'center', minWidth: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <p style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0, color: '#0f172a' }}>{selectedDate.toLocaleString('default', { month: 'short' })}</p>
                         </div>
-                        <div style={{ display: 'flex', gap: '15px' }}>
+                        <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
                             {weekDays.map((date, i) => {
                                 const isSelected = date.toDateString() === selectedDate.toDateString();
                                 return (

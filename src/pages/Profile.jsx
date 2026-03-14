@@ -67,6 +67,8 @@ const Profile = () => {
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
+                        flexWrap: 'wrap',
+                        gap: '20px',
                         marginBottom: '60px',
                         padding: '40px',
                         backgroundColor: '#f8fafc',
@@ -179,11 +181,13 @@ const Profile = () => {
                                                 display: 'flex',
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center',
+                                                flexWrap: 'wrap',
+                                                gap: '20px',
                                                 position: 'relative',
                                                 overflow: 'hidden'
                                             }}
                                         >
-                                            <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+                                            <div style={{ display: 'flex', gap: '24px', alignItems: 'center', flexWrap: 'wrap' }}>
                                                 {booking.poster_url ? (
                                                     <div style={{ width: '80px', height: '80px', borderRadius: '16px', overflow: 'hidden' }}>
                                                         <img src={booking.poster_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

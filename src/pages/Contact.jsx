@@ -95,7 +95,7 @@ const Contact = () => {
                 </p>
             </motion.div>
 
-            <div style={{
+            <div className="responsive-grid-2" style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1.5fr',
                 gap: '40px',
@@ -194,7 +194,7 @@ const Contact = () => {
                     }}
                 >
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                        <div className="responsive-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 <label style={{ fontWeight: '600', fontSize: '0.9rem' }}>Full Name</label>
                                 <input

@@ -120,7 +120,7 @@ Date: _______________
                     </p>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '40px' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                        <div className="responsive-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                             <div>
                                 <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', color: '#334155', marginBottom: '8px' }}>Today's Date</label>
                                 <input type="date" name="date" value={formData.date} onChange={handleInputChange} style={inputStyle} />
@@ -131,7 +131,7 @@ Date: _______________
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                        <div className="responsive-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                             <div>
                                 <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', color: '#334155', marginBottom: '8px' }}>Venue Name</label>
                                 <input type="text" name="venueName" placeholder="e.g. Main Auditorium" value={formData.venueName} onChange={handleInputChange} style={inputStyle} />
@@ -142,7 +142,7 @@ Date: _______________
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
+                        <div className="responsive-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
                             <div>
                                 <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', color: '#334155', marginBottom: '8px' }}>Event Date</label>
                                 <input type="date" name="eventDate" value={formData.eventDate} onChange={handleInputChange} style={inputStyle} />
@@ -162,7 +162,7 @@ Date: _______________
                             <textarea name="purpose" rows="3" placeholder="Briefly describe the purpose..." value={formData.purpose} onChange={handleInputChange} style={{...inputStyle, resize: 'vertical'}}></textarea>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
+                        <div className="responsive-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
                             <div>
                                 <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: '600', color: '#334155', marginBottom: '8px' }}>Your Name</label>
                                 <input type="text" name="yourName" placeholder="e.g. John Doe" value={formData.yourName} onChange={handleInputChange} style={inputStyle} />

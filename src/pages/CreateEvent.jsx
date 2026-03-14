@@ -142,21 +142,20 @@ const CreateEvent = () => {
                 </button>
 
                 <div style={{ position: 'relative' }}>
-                    {/* Status Badge */}
-                    <div style={{
-                        position: 'absolute', top: '-10px', right: 0,
-                        backgroundColor: '#bef264', padding: '15px 30px', borderRadius: '16px',
-                        textAlign: 'center', minWidth: '150px', border: '1px solid #a3e635',
-                        boxShadow: '0 10px 20px rgba(190, 242, 100, 0.2)'
-                    }}>
-                        <p style={{ fontWeight: '700', fontSize: '1.1rem', margin: 0 }}>{slot}</p>
-                        <p style={{ fontSize: '0.75rem', fontWeight: '800', margin: '4px 0 0', color: 'rgba(0,0,0,0.5)' }}>PENDING</p>
-                    </div>
-
-                    {/* Top Info */}
-                    <div style={{ marginBottom: '60px' }}>
-                        <p style={{ color: '#64748b', fontSize: '1.1rem', marginBottom: '8px' }}>Event Date</p>
-                        <h1 style={{ fontSize: '2.5rem', fontWeight: '800', letterSpacing: '-1px' }}>{formattedDate}</h1>
+                    {/* Top Info & Status Badge */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap-reverse', gap: '20px', marginBottom: '40px' }}>
+                        <div>
+                            <p style={{ color: '#64748b', fontSize: '1.1rem', marginBottom: '8px' }}>Event Date</p>
+                            <h1 style={{ fontSize: '2.5rem', fontWeight: '800', letterSpacing: '-1px' }}>{formattedDate}</h1>
+                        </div>
+                        <div style={{
+                            backgroundColor: '#bef264', padding: '15px 30px', borderRadius: '16px',
+                            textAlign: 'center', minWidth: '150px', border: '1px solid #a3e635',
+                            boxShadow: '0 10px 20px rgba(190, 242, 100, 0.2)'
+                        }}>
+                            <p style={{ fontWeight: '700', fontSize: '1.1rem', margin: 0 }}>{slot}</p>
+                            <p style={{ fontSize: '0.75rem', fontWeight: '800', margin: '4px 0 0', color: 'rgba(0,0,0,0.5)' }}>PENDING</p>
+                        </div>
                     </div>
 
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
