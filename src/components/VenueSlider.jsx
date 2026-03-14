@@ -122,14 +122,16 @@ const VenueSlider = () => {
                                     transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
                                     onClick={() => navigate('/book', { state: { venue: currentVenue } })}
                                     style={{
-                                        padding: '16px 40px',
+                                        padding: '10px 24px',
                                         backgroundColor: '#000',
                                         color: '#fff',
-                                        fontSize: '1rem',
+                                        fontSize: '0.9rem',
+                                        fontWeight: '700',
                                         borderRadius: '50px',
                                         boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
                                         cursor: 'pointer',
-                                        border: 'none'
+                                        border: 'none',
+                                        display: 'inline-block'
                                     }}
                                 >
                                     Book Venue
