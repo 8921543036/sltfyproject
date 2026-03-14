@@ -53,7 +53,7 @@ const Footer = () => {
                         <h4 style={{ fontSize: '1rem', fontWeight: '700', marginBottom: '20px', textTransform: 'uppercase' }}>Contact</h4>
                         <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '15px' }}>
                             <li style={{ display: 'flex', gap: '10px', color: '#555', fontSize: '0.9rem' }}>
-                                <MapPin size={16} /> 123 University Campus
+                                <MapPin size={16} /> EMEA College
                             </li>
                             <li style={{ display: 'flex', gap: '10px', color: '#555', fontSize: '0.9rem' }}>
                                 <Mail size={16} /> hello@slotfy.edu

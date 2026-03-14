@@ -112,7 +112,7 @@ const Venues = () => {
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#475569', fontSize: '0.9rem' }}>
                                     <MapPin size={16} />
-                                    <span>Main Campus</span>
+                                    <span>{venue.location || 'Main Campus'}</span>
                                 </div>
                             </div>
 

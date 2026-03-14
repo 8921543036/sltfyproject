@@ -15,6 +15,12 @@ const AuthModal = ({ isOpen, onClose }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+    const validateAdmissionNumber = (num) => {
+        // Regex: 2 digits, 4 letters, 3 digits (Total 9)
+        const regex = /^\d{2}[a-zA-Z]{4}\d{3}$/;
+        return regex.test(num);
+    };
+
     const handleAuth = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -25,6 +31,11 @@ const AuthModal = ({ isOpen, onClose }) => {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
             } else {
+                if (!validateAdmissionNumber(admissionNumber)) {
+                    setError("Admission Number must be in format: 22ABCD123 (9 characters: 2 digits, 4 letters, 3 digits)");
+                    setLoading(false);
+                    return;
+                }
                 if (password !== confirmPassword) {
                     setError("Passwords do not match");
                     setLoading(false);
@@ -33,7 +44,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                 const { error } = await supabase.auth.signUp({
                     email,
                     password,
-                    options: { data: { name, admission_number: admissionNumber } }
+                    options: { data: { name, admission_number: admissionNumber.toUpperCase() } }
                 });
                 if (error) throw error;
             }
@@ -124,10 +135,11 @@ const AuthModal = ({ isOpen, onClose }) => {
                                         <input
                                             style={{ paddingLeft: '45px' }}
                                             type="text"
-                                            placeholder="Admission Number"
+                                            placeholder="Admission Number (e.g. 21MEEC001)"
                                             required
+                                            maxLength={9}
                                             value={admissionNumber}
-                                            onChange={(e) => setAdmissionNumber(e.target.value)}
+                                            onChange={(e) => setAdmissionNumber(e.target.value.toUpperCase())}
                                         />
                                     </div>
                                 </>

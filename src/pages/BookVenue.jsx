@@ -153,6 +153,7 @@ const BookVenue = () => {
 
     const venueDetails = {
         capacity: currentVenue.capacity || '500 Persons',
+        location: currentVenue.location || 'Main Campus',
         facilities: currentVenue.facilities || ['Projector & Screen', 'Central AC', 'Surround Sound System', 'Stage Lighting'],
         rules: currentVenue.rules || ['No food inside', 'Pre-approval required', 'Technical staff must be present'],
         description: currentVenue.description || 'The venue is equipped with state-of-the-art facilities, making it ideal for academic presentations, workshops, and high-profile meetings.'
@@ -230,7 +231,14 @@ const BookVenue = () => {
 
                             <div>
                                 <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: '#0f172a', fontSize: '1rem' }}>
-                                    <MapPin size={18} /> About Venue
+                                    <MapPin size={18} /> Location
+                                </h4>
+                                <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: '1.6' }}>{details.location}</p>
+                            </div>
+
+                            <div>
+                                <h4 style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: '#0f172a', fontSize: '1rem' }}>
+                                    <Info size={18} /> About Venue
                                 </h4>
                                 <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: '1.6' }}>{details.description}</p>
                             </div>
@@ -259,7 +267,10 @@ const BookVenue = () => {
                     </div>
                     <div>
                         <h1 style={{ fontSize: '1.8rem', fontWeight: '800', marginBottom: '8px', letterSpacing: '-1px' }}>{currentVenue.name.toUpperCase()}</h1>
-                        <p style={{ color: '#64748b', fontSize: '0.95rem', marginBottom: '20px' }}>Official Booking Dashboard</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#64748b', fontSize: '0.95rem', marginBottom: '20px' }}>
+                            <MapPin size={16} />
+                            <span>{currentVenue.location || 'Main Campus'}</span>
+                        </div>
                         <button
                             onClick={() => setIsModalOpen(true)}
                             style={{
@@ -276,35 +287,35 @@ const BookVenue = () => {
 
                 {/* Date Selection Section */}
                 <div style={{ marginBottom: '50px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '30px', marginBottom: '40px', flexWrap: 'wrap' }}>
-                        <div style={{ padding: '30px 20px', backgroundColor: '#e2e8f0', borderRadius: '32px', textAlign: 'center', minWidth: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <p style={{ fontSize: '1.8rem', fontWeight: '800', margin: 0, color: '#0f172a' }}>{selectedDate.toLocaleString('default', { month: 'short' })}</p>
-                        </div>
-                        <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
-                            {weekDays.map((date, i) => {
-                                const isSelected = date.toDateString() === selectedDate.toDateString();
-                                return (
-                                    <motion.div
-                                        key={i}
-                                        whileHover={{ y: -5 }}
-                                        onClick={() => setSelectedDate(date)}
-                                        style={{
-                                            padding: '15px 10px',
-                                            backgroundColor: isSelected ? '#000' : 'transparent',
-                                            color: isSelected ? '#fff' : '#000',
-                                            borderRadius: '16px',
-                                            cursor: 'pointer',
-                                            textAlign: 'center',
-                                            minWidth: '60px',
-                                            transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-                                        }}
-                                    >
-                                        <p style={{ fontSize: '1.2rem', fontWeight: '800', margin: 0 }}>{date.getDate()}</p>
-                                        <p style={{ fontSize: '0.85rem', opacity: isSelected ? 0.9 : 0.6, margin: '4px 0 0' }}>{date.toLocaleString('default', { weekday: 'short' })}</p>
-                                    </motion.div>
-                                );
-                            })}
-                        </div>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: '800', color: '#0f172a', marginBottom: '24px', textAlign: 'left', borderLeft: '4px solid #000', paddingLeft: '15px' }}>
+                        {selectedDate.toLocaleString('default', { month: 'long', year: 'numeric' })}
+                    </h2>
+                    
+                    <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', marginBottom: '40px' }}>
+                        {weekDays.map((date, i) => {
+                            const isSelected = date.toDateString() === selectedDate.toDateString();
+                            return (
+                                <motion.div
+                                    key={i}
+                                    whileHover={{ y: -5 }}
+                                    onClick={() => setSelectedDate(date)}
+                                    style={{
+                                        padding: '15px 10px',
+                                        backgroundColor: isSelected ? '#000' : 'transparent',
+                                        color: isSelected ? '#fff' : '#000',
+                                        borderRadius: '16px',
+                                        cursor: 'pointer',
+                                        textAlign: 'center',
+                                        minWidth: '65px',
+                                        border: isSelected ? 'none' : '1px solid #f1f5f9',
+                                        transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                                    }}
+                                >
+                                    <p style={{ fontSize: '1.2rem', fontWeight: '800', margin: 0 }}>{date.getDate()}</p>
+                                    <p style={{ fontSize: '0.85rem', opacity: isSelected ? 0.9 : 0.6, margin: '4px 0 0' }}>{date.toLocaleString('default', { weekday: 'short' })}</p>
+                                </motion.div>
+                            );
+                        })}
                     </div>
 
 
@@ -360,15 +371,7 @@ const BookVenue = () => {
                                                             width: '10px', height: '10px', borderRadius: '50%', backgroundColor: color
                                                         }}></div>
                                                     )}
-                                                    <p style={{
-                                                        fontSize: '0.65rem',
-                                                        textTransform: 'uppercase',
-                                                        fontWeight: '800',
-                                                        color: isSelected ? '#fff' : (status === 'available' ? '#94a3b8' : color),
-                                                        opacity: isSelected ? 0.8 : 1
-                                                    }}>
-                                                        {status === 'available' ? 'AVAILABLE' : status.toUpperCase()}
-                                                    </p>
+                                                    {/* Status text removed for cleaner look */}
                                                 </motion.div>
                                             );
                                         })}

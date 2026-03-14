@@ -8,7 +8,7 @@ const Contact = () => {
     const [contactInfo, setContactInfo] = useState({
         email: 'support@slotify.com',
         phone: '+91 98765 43210',
-        address: 'Main Campus, Slotify University'
+        address: 'EMEA College'
     });
     const [formData, setFormData] = useState({
         full_name: '',

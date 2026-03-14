@@ -143,18 +143,14 @@ const CreateEvent = () => {
 
                 <div style={{ position: 'relative' }}>
                     {/* Top Info & Status Badge */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap-reverse', gap: '20px', marginBottom: '40px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '20px', marginBottom: '40px', borderBottom: '2px solid #f1f5f9', paddingBottom: '20px' }}>
                         <div>
                             <p style={{ color: '#64748b', fontSize: '1.1rem', marginBottom: '8px' }}>Event Date</p>
-                            <h1 style={{ fontSize: '2.5rem', fontWeight: '800', letterSpacing: '-1px' }}>{formattedDate}</h1>
+                            <h1 style={{ fontSize: '2.5rem', fontWeight: '800', letterSpacing: '-1px', margin: 0 }}>{formattedDate}</h1>
                         </div>
-                        <div style={{
-                            backgroundColor: '#bef264', padding: '15px 30px', borderRadius: '16px',
-                            textAlign: 'center', minWidth: '150px', border: '1px solid #a3e635',
-                            boxShadow: '0 10px 20px rgba(190, 242, 100, 0.2)'
-                        }}>
-                            <p style={{ fontWeight: '700', fontSize: '1.1rem', margin: 0 }}>{slot}</p>
-                            <p style={{ fontSize: '0.75rem', fontWeight: '800', margin: '4px 0 0', color: 'rgba(0,0,0,0.5)' }}>PENDING</p>
+                        <div style={{ textAlign: 'right' }}>
+                            <p style={{ color: '#64748b', fontSize: '1.1rem', marginBottom: '8px' }}>Selected Time</p>
+                            <h1 style={{ fontSize: '2.5rem', fontWeight: '800', letterSpacing: '-1px', margin: 0, color: '#000' }}>{slot}</h1>
                         </div>
                     </div>
 
@@ -173,14 +169,33 @@ const CreateEvent = () => {
 
                         <div className="form-group">
                             <label style={{ display: 'block', fontSize: '1.1rem', fontWeight: '600', marginBottom: '12px' }}>Club / Department</label>
-                            <input
-                                type="text"
+                            <select
                                 required
                                 value={clubDept}
                                 onChange={(e) => setClubDept(e.target.value)}
-                                placeholder="Which club or department is organizing this?"
-                                style={{ width: '100%', padding: '18px 24px', borderRadius: '16px', border: '2px solid #e2e8f0', fontSize: '1rem', outline: 'none' }}
-                            />
+                                style={{
+                                    width: '100%',
+                                    padding: '18px 24px',
+                                    borderRadius: '16px',
+                                    border: '2px solid #e2e8f0',
+                                    fontSize: '1rem',
+                                    outline: 'none',
+                                    backgroundColor: '#fff',
+                                    appearance: 'none',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                <option value="" disabled>Select a club or department</option>
+                                <option value="IEDC">IEDC</option>
+                                <option value="CONNECT">CONNECT</option>
+                                <option value="BSC COMPUTER SCIENCE">BSC COMPUTER SCIENCE</option>
+                                <option value="BA ENGLISH">BA ENGLISH</option>
+                                <option value="WEST ASIA">WEST ASIA</option>
+                                <option value="MATHS AND PHYSICS DOUBLE MAIN">MATHS AND PHYSICS DOUBLE MAIN</option>
+                                <option value="UNION">UNION</option>
+                                <option value="SIP CLUB">SIP CLUB</option>
+                                <option value="BMC">BMC</option>
+                            </select>
                         </div>
 
                         <div className="form-group">

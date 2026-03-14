@@ -5,7 +5,7 @@ import { FileText, Download, CheckCircle } from 'lucide-react';
 const PermissionLetter = () => {
     const [formData, setFormData] = useState({
         date: '',
-        institutionName: 'MEA Engineering College',
+        institutionName: 'EMEA College',
         venueName: '',
         eventTitle: '',
         eventDate: '',
@@ -26,51 +26,62 @@ const PermissionLetter = () => {
     };
 
     const handleDownloadTemplate = () => {
-        const templateContent = `PERMISSION LETTER FOR VENUE BOOKING
-
-Date: ${formData.date || '[Date]'}
-
-To,
-The Principal / Head of Department
-${formData.institutionName || '[Institution/Department Name]'}
-
-Subject: Request for permission to use ${formData.venueName || '[Venue Name]'}
-
-Respected Sir/Madam,
-
-I am writing to formally request permission to use the ${formData.venueName || '[Venue Name]'} for organizing an event titled "${formData.eventTitle || '[Event Title]'}". 
-
-The proposed schedule for the event is as follows:
-Date: ${formData.eventDate || '[Event Date]'}
-Time: ${formData.startTime || '[Start Time]'} to ${formData.endTime || '[End Time]'}
-Purpose: ${formData.purpose || '[Brief description of the event\'s purpose]'}
-
-We assure you that all necessary protocols will be followed, and the venue will be maintained in its original condition.
-
-Kindly grant us the permission to proceed with the booking.
-
-Thank you.
-
-Yours sincerely,
-
-${formData.yourName || '[Your Name]'}
-${formData.designation || '[Your Designation/Class]'}
-${formData.contactInfo || '[Contact Information]'}
-
------------------------------------------
-Official Use Only:
-[ ] Approved
-[ ] Rejected
-
-Signature of Authority: _______________
-Date: _______________
-`;
-
-        const blob = new Blob([templateContent], { type: 'text/plain' });
+        const header = `
+            <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+                  xmlns:w='urn:schemas-microsoft-com:office:word' 
+                  xmlns='http://www.w3.org/TR/REC-html40'>
+            <head><meta charset='utf-8'><title>Permission Letter</title></head><body>`;
+        const footer = "</body></html>";
+        const content = `
+            <div style="font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.5;">
+                <h2 style="text-align: center; text-decoration: underline;">PERMISSION LETTER FOR VENUE BOOKING</h2>
+                <br/>
+                <p>Date: ${formData.date || '[Date]'}</p>
+                <br/>
+                <p>To,<br/>
+                The Principal / Head of Department<br/>
+                ${formData.institutionName || '[Institution/Department Name]'}</p>
+                <br/>
+                <p><b>Subject: Request for permission to use ${formData.venueName || '[Venue Name]'}</b></p>
+                <br/>
+                <p>Respected Sir/Madam,</p>
+                <p>I am writing to formally request permission to use the <b>${formData.venueName || '[Venue Name]'}</b> for organizing an event titled "<b>${formData.eventTitle || '[Event Title]'}</b>".</p>
+                <p>The proposed schedule for the event is as follows:</p>
+                <ul style="list-style-type: none;">
+                    <li><b>Date:</b> ${formData.eventDate || '[Event Date]'}</li>
+                    <li><b>Time:</b> ${formData.startTime || '[Start Time]'} to ${formData.endTime || '[End Time]'}</li>
+                </ul>
+                <p><b>Purpose:</b> ${formData.purpose || '[Brief description of the event\'s purpose]'}</p>
+                <br/>
+                <p>We assure you that all necessary protocols will be followed, and the venue will be maintained in its original condition.</p>
+                <p>Kindly grant us the permission to proceed with the booking.</p>
+                <br/>
+                <p>Thank you.</p>
+                <br/>
+                <p>Yours sincerely,</p>
+                <br/>
+                <p><b>${formData.yourName || '[Your Name]'}</b><br/>
+                ${formData.designation || '[Your Designation/Class]'}<br/>
+                ${formData.contactInfo || '[Contact Information]'}</p>
+                <br/><br/>
+                <p>-----------------------------------------</p>
+                <p><b>Official Use Only:</b></p>
+                <p>[ ] Approved&nbsp;&nbsp;&nbsp;&nbsp;[ ] Rejected</p>
+                <br/>
+                <p>Signature of Authority: _______________<br/>
+                Date: _______________</p>
+            </div>
+        `;
+        const source = header + content + footer;
+        
+        const blob = new Blob(['\ufeff', source], {
+            type: 'application/msword'
+        });
+        
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `${formData.eventTitle || 'Venue'}_Permission_Letter.txt`;
+        a.download = `PermissionLetter.doc`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -112,7 +123,7 @@ Date: _______________
                     </div>
                     
                     <h1 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#0f172a', marginBottom: '15px', letterSpacing: '-1px', textAlign: 'center' }}>
-                        Connect & IEDC Permission Letter
+                        Permission Letter
                     </h1>
                     
                     <p style={{ color: '#64748b', fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '40px', maxWidth: '600px', margin: '0 auto 40px', textAlign: 'center' }}>
