@@ -11,6 +11,7 @@ import Profile from './pages/Profile';
 import Contact from './pages/Contact';
 import Venues from './pages/Venues';
 import AdminLogin from './pages/AdminLogin';
+import PermissionLetter from './pages/PermissionLetter';
 import './index.css';
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/venues" element={<Venues />} />
+        <Route path="/permission-letter" element={<PermissionLetter />} />
         <Route path="/splash" element={<Splash />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

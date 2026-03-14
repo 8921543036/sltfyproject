@@ -10,7 +10,7 @@ const CreateEvent = () => {
     const navigate = useNavigate();
     const {
         slot = '10:30 – 11:30',
-        dateStr = new Date().toISOString().split('T')[0],
+        dateStr = (() => { const d = new Date(); const y = d.getFullYear(); const m = String(d.getMonth() + 1).padStart(2, '0'); const day = String(d.getDate()).padStart(2, '0'); return `${y}-${m}-${day}`; })(),
         formattedDate = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }),
         venueName = 'SEMINAR HALL',
         durationType = '1 Hour'

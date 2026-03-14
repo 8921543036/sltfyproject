@@ -90,7 +90,11 @@ const Navbar = () => {
                         Services
                     </a>
                     <Link to="/venues" className="nav-link">Venues</Link>
+                    <a href="https://connect-letterpad.vercel.app/" target="_blank" rel="noopener noreferrer" className="nav-link">Permission Letter</a>
                     <Link to="/contact" className="nav-link">Contact</Link>
+                    {localStorage.getItem('isAdmin') === 'true' && (
+                        <Link to="/admin" className="nav-link" style={{ color: '#ff4444', fontWeight: 'bold' }}>Admin</Link>
+                    )}
                 </div>
 
                 {/* Right Section: Actions */}

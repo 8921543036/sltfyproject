@@ -136,7 +136,7 @@ const VenueSlider = () => {
                             </motion.div>
                         </AnimatePresence>
 
-                        <div style={{ display: 'flex', gap: '8px', marginTop: '40px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '40px', width: '100%' }}>
                             {venues.map((_, i) => (
                                 <div
                                     key={i}

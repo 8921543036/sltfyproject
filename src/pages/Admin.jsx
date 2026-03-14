@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, XCircle, Clock, Search, Filter, Calendar, MapPin, User, ChevronRight, LayoutDashboard, LogOut } from 'lucide-react';
+import { CheckCircle2, XCircle, Clock, Search, Filter, Calendar, MapPin, User, ChevronRight, LayoutDashboard, LogOut, Trash2 } from 'lucide-react';
 import { supabase } from '../supabase/supabaseClient';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
@@ -57,15 +57,36 @@ const Admin = () => {
     };
 
     const updateStatus = async (id, newStatus) => {
-        const { error } = await supabase
+        const { data, error } = await supabase
             .from('bookings')
             .update({ status: newStatus })
-            .eq('id', id);
+            .eq('id', id)
+            .select();
 
-        if (!error) {
-            setBookings(bookings.map(b => b.id === id ? { ...b, status: newStatus } : b));
-        } else {
+        if (error) {
             alert(error.message);
+        } else if (!data || data.length === 0) {
+            alert('Update blocked by Supabase RLS! The database was not updated. Please go to Supabase Dashboard -> SQL Editor and run this command to fix it:\n\nCREATE POLICY "allow_update_all" ON public.bookings FOR UPDATE USING (true);');
+        } else {
+            setBookings(bookings.map(b => b.id === id ? { ...b, status: newStatus } : b));
+        }
+    };
+
+    const deleteBooking = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this booking?")) return;
+
+        const { data, error } = await supabase
+            .from('bookings')
+            .delete()
+            .eq('id', id)
+            .select();
+
+        if (error) {
+            alert(error.message);
+        } else if (!data || data.length === 0) {
+            alert('Delete blocked by Supabase RLS! The database was not updated. Please go to Supabase Dashboard -> SQL Editor and run this command:\n\nCREATE POLICY "allow_delete_all" ON public.bookings FOR DELETE USING (true);');
+        } else {
+            setBookings(bookings.filter(b => b.id !== id));
         }
     };
 
@@ -315,6 +336,13 @@ const Admin = () => {
                                                         Reset to Pending
                                                     </button>
                                                 )}
+                                                <button
+                                                    onClick={() => deleteBooking(booking.id)}
+                                                    style={{ padding: '12px', borderRadius: '12px', border: 'none', backgroundColor: '#fee2e2', color: '#ef4444', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                                                    title="Delete Booking"
+                                                >
+                                                    <Trash2 size={18} />
+                                                </button>
                                             </div>
                                         </motion.div>
                                     ))}

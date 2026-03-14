@@ -29,6 +29,13 @@ const BookVenue = () => {
         return venues[0]; // Default to first venue (Seminar Hall)
     });
 
+    const getLocalIsoDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     // Get current week dates
     const getWeekDays = () => {
         const days = [];
@@ -54,7 +61,7 @@ const BookVenue = () => {
 
     const fetchBookings = async () => {
         setLoading(true);
-        const dateStr = selectedDate.toISOString().split('T')[0];
+        const dateStr = getLocalIsoDate(selectedDate);
         const { data, error } = await supabase
             .from('bookings')
             .select('*')
@@ -71,7 +78,7 @@ const BookVenue = () => {
             return;
         }
 
-        const dateStr = selectedDate.toISOString().split('T')[0];
+        const dateStr = getLocalIsoDate(selectedDate);
         const formattedDate = selectedDate.toLocaleDateString('en-GB', {
             weekday: 'short',
             day: 'numeric',
@@ -313,57 +320,62 @@ const BookVenue = () => {
 
                     {/* Booking Rows */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
-                        {Object.entries(timeSlots).map(([title, slots]) => (
-                            <div key={title}>
-                                <h3 style={{ fontSize: '0.85rem', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '20px', letterSpacing: '1px' }}>{title}</h3>
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '20px' }}>
-                                    {slots.filter(slot => getSlotStatus(slot) !== 'accepted').map(slot => {
-                                        const status = getSlotStatus(slot);
-                                        const color = getStatusColor(status);
-                                        const isSelected = selectedSlot === slot;
+                        {Object.entries(timeSlots).map(([title, slots]) => {
+                            const availableSlots = slots.filter(slot => getSlotStatus(slot) !== 'accepted');
+                            if (availableSlots.length === 0) return null;
 
-                                        return (
-                                            <motion.div
-                                                key={slot}
-                                                whileHover={status === 'available' ? { y: -5, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' } : {}}
-                                                onClick={() => {
-                                                    if (status !== 'available') return;
-                                                    handleBooking(slot, title.split(' ')[0]);
-                                                }}
-                                                style={{
-                                                    padding: '24px',
-                                                    backgroundColor: isSelected ? '#000' : '#fff',
-                                                    color: isSelected ? '#fff' : '#000',
-                                                    borderRadius: '20px',
-                                                    border: `2px solid ${isSelected ? '#000' : '#f1f5f9'}`,
-                                                    cursor: status === 'available' ? 'pointer' : 'not-allowed',
-                                                    position: 'relative',
-                                                    textAlign: 'center',
-                                                    boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
-                                                }}
-                                            >
-                                                <p style={{ fontWeight: '700', marginBottom: '4px' }}>{slot}</p>
-                                                {status !== 'available' && (
-                                                    <div style={{
-                                                        position: 'absolute', top: '10px', right: '10px',
-                                                        width: '10px', height: '10px', borderRadius: '50%', backgroundColor: color
-                                                    }}></div>
-                                                )}
-                                                <p style={{
-                                                    fontSize: '0.65rem',
-                                                    textTransform: 'uppercase',
-                                                    fontWeight: '800',
-                                                    color: isSelected ? '#fff' : (status === 'available' ? '#94a3b8' : color),
-                                                    opacity: isSelected ? 0.8 : 1
-                                                }}>
-                                                    {status === 'available' ? 'AVAILABLE' : status.toUpperCase()}
-                                                </p>
-                                            </motion.div>
-                                        );
-                                    })}
+                            return (
+                                <div key={title}>
+                                    <h3 style={{ fontSize: '0.85rem', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '20px', letterSpacing: '1px' }}>{title}</h3>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '20px' }}>
+                                        {availableSlots.map(slot => {
+                                            const status = getSlotStatus(slot);
+                                            const color = getStatusColor(status);
+                                            const isSelected = selectedSlot === slot;
+
+                                            return (
+                                                <motion.div
+                                                    key={slot}
+                                                    whileHover={status === 'available' ? { y: -5, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' } : {}}
+                                                    onClick={() => {
+                                                        if (status !== 'available') return;
+                                                        handleBooking(slot, title.split(' ')[0]);
+                                                    }}
+                                                    style={{
+                                                        padding: '24px',
+                                                        backgroundColor: isSelected ? '#000' : '#fff',
+                                                        color: isSelected ? '#fff' : '#000',
+                                                        borderRadius: '20px',
+                                                        border: `2px solid ${isSelected ? '#000' : '#f1f5f9'}`,
+                                                        cursor: status === 'available' ? 'pointer' : 'not-allowed',
+                                                        position: 'relative',
+                                                        textAlign: 'center',
+                                                        boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)'
+                                                    }}
+                                                >
+                                                    <p style={{ fontWeight: '700', marginBottom: '4px' }}>{slot}</p>
+                                                    {status !== 'available' && (
+                                                        <div style={{
+                                                            position: 'absolute', top: '10px', right: '10px',
+                                                            width: '10px', height: '10px', borderRadius: '50%', backgroundColor: color
+                                                        }}></div>
+                                                    )}
+                                                    <p style={{
+                                                        fontSize: '0.65rem',
+                                                        textTransform: 'uppercase',
+                                                        fontWeight: '800',
+                                                        color: isSelected ? '#fff' : (status === 'available' ? '#94a3b8' : color),
+                                                        opacity: isSelected ? 0.8 : 1
+                                                    }}>
+                                                        {status === 'available' ? 'AVAILABLE' : status.toUpperCase()}
+                                                    </p>
+                                                </motion.div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </div>
