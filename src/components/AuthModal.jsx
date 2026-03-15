@@ -14,6 +14,7 @@ const AuthModal = ({ isOpen, onClose }) => {
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [userType, setUserType] = useState('student'); // 'student' or 'teacher'
 
     const validateAdmissionNumber = (num) => {
         // Regex: 2 digits, 4 letters, 3 digits (Total 9)
@@ -31,11 +32,18 @@ const AuthModal = ({ isOpen, onClose }) => {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
             } else {
-                if (!validateAdmissionNumber(admissionNumber)) {
+                if (userType === 'student' && !validateAdmissionNumber(admissionNumber)) {
                     setError("Admission Number must be in format: 22ABCD123 (9 characters: 2 digits, 4 letters, 3 digits)");
                     setLoading(false);
                     return;
                 }
+                
+                if (userType === 'teacher' && admissionNumber.length < 3) {
+                    setError("Invalid Teacher ID. Please enter at least 3 characters.");
+                    setLoading(false);
+                    return;
+                }
+
                 if (password !== confirmPassword) {
                     setError("Passwords do not match");
                     setLoading(false);
@@ -44,7 +52,13 @@ const AuthModal = ({ isOpen, onClose }) => {
                 const { error } = await supabase.auth.signUp({
                     email,
                     password,
-                    options: { data: { name, admission_number: admissionNumber.toUpperCase() } }
+                    options: { 
+                        data: { 
+                            name, 
+                            admission_number: admissionNumber.toUpperCase(),
+                            user_type: userType
+                        } 
+                    }
                 });
                 if (error) throw error;
             }
@@ -119,6 +133,50 @@ const AuthModal = ({ isOpen, onClose }) => {
                         <form onSubmit={handleAuth} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                             {!isLogin && (
                                 <>
+                                    <div style={{ 
+                                        display: 'flex', 
+                                        backgroundColor: '#f1f5f9', 
+                                        padding: '4px', 
+                                        borderRadius: '12px',
+                                        marginBottom: '8px'
+                                    }}>
+                                        <div 
+                                            onClick={() => setUserType('student')}
+                                            style={{
+                                                flex: 1,
+                                                padding: '10px',
+                                                textAlign: 'center',
+                                                borderRadius: '10px',
+                                                fontSize: '0.9rem',
+                                                fontWeight: '700',
+                                                cursor: 'pointer',
+                                                backgroundColor: userType === 'student' ? '#fff' : 'transparent',
+                                                color: userType === 'student' ? '#000' : '#64748b',
+                                                boxShadow: userType === 'student' ? '0 2px 4px rgba(0,0,0,0.05)' : 'none',
+                                                transition: 'all 0.2s'
+                                            }}
+                                        >
+                                            Student
+                                        </div>
+                                        <div 
+                                            onClick={() => setUserType('teacher')}
+                                            style={{
+                                                flex: 1,
+                                                padding: '10px',
+                                                textAlign: 'center',
+                                                borderRadius: '10px',
+                                                fontSize: '0.9rem',
+                                                fontWeight: '700',
+                                                cursor: 'pointer',
+                                                backgroundColor: userType === 'teacher' ? '#fff' : 'transparent',
+                                                color: userType === 'teacher' ? '#000' : '#64748b',
+                                                boxShadow: userType === 'teacher' ? '0 2px 4px rgba(0,0,0,0.05)' : 'none',
+                                                transition: 'all 0.2s'
+                                            }}
+                                        >
+                                            Teacher
+                                        </div>
+                                    </div>
                                     <div style={{ position: 'relative' }}>
                                         <User size={18} style={{ position: 'absolute', left: '14px', top: '15px', color: '#94a3b8' }} />
                                         <input
@@ -135,9 +193,9 @@ const AuthModal = ({ isOpen, onClose }) => {
                                         <input
                                             style={{ paddingLeft: '45px' }}
                                             type="text"
-                                            placeholder="Admission Number (e.g. 21MEEC001)"
+                                            placeholder={userType === 'student' ? "Admission Number (e.g. 21MEEC001)" : "Teacher's ID"}
                                             required
-                                            maxLength={9}
+                                            maxLength={userType === 'student' ? 9 : 20}
                                             value={admissionNumber}
                                             onChange={(e) => setAdmissionNumber(e.target.value.toUpperCase())}
                                         />

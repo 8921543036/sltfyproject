@@ -56,7 +56,14 @@ const BookVenue = () => {
             setUser(session?.user ?? null);
         });
 
+        // Listen for auth changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null);
+        });
+
         fetchBookings();
+
+        return () => subscription.unsubscribe();
     }, [selectedDate]);
 
     const fetchBookings = async () => {
@@ -365,13 +372,22 @@ const BookVenue = () => {
                                                     }}
                                                 >
                                                     <p style={{ fontWeight: '700', marginBottom: '4px' }}>{slot}</p>
+                                                    <p style={{ 
+                                                        fontSize: '0.75rem', 
+                                                        fontWeight: '800', 
+                                                        textTransform: 'uppercase',
+                                                        letterSpacing: '0.5px',
+                                                        color: status === 'available' ? '#10b981' : color,
+                                                        margin: 0
+                                                    }}>
+                                                        {status === 'available' ? 'Available' : status}
+                                                    </p>
                                                     {status !== 'available' && (
                                                         <div style={{
                                                             position: 'absolute', top: '10px', right: '10px',
                                                             width: '10px', height: '10px', borderRadius: '50%', backgroundColor: color
                                                         }}></div>
                                                     )}
-                                                    {/* Status text removed for cleaner look */}
                                                 </motion.div>
                                             );
                                         })}

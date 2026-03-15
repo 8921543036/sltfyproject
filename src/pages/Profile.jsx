@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, Clock, MapPin, User, ChevronRight, CheckCircle2, XCircle, Clock4, LogOut, LayoutGrid, Package, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, MapPin, User, ChevronRight, CheckCircle2, XCircle, Clock4, LogOut, LayoutGrid, Package, CheckCircle, Trash2 } from 'lucide-react';
 import { supabase } from '../supabase/supabaseClient';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
@@ -39,6 +39,28 @@ const Profile = () => {
     const handleLogout = async () => {
         await supabase.auth.signOut();
         navigate('/');
+    };
+
+    const handleDeleteBooking = async (bookingId) => {
+        if (!window.confirm("Are you sure you want to cancel this booking? This action cannot be undone and the slot will be made available for others.")) {
+            return;
+        }
+
+        try {
+            const { error } = await supabase
+                .from('bookings')
+                .delete()
+                .eq('id', bookingId);
+
+            if (error) throw error;
+
+            // Update local state to remove the deleted booking
+            setBookings(prev => prev.filter(b => b.id !== bookingId));
+            alert("Booking cancelled successfully.");
+        } catch (error) {
+            console.error("Error deleting booking:", error.message);
+            alert("Failed to cancel booking. Please try again.");
+        }
     };
 
     const getStatusInfo = (status) => {
@@ -270,16 +292,43 @@ const Profile = () => {
                                                 </div>
                                             </div>
 
-                                            <div style={{
-                                                padding: '14px 24px', borderRadius: '20px',
-                                                backgroundColor: `${statusInfo.color}08`,
-                                                color: statusInfo.color, border: `1px solid ${statusInfo.color}20`,
-                                                display: 'flex', alignItems: 'center',
-                                                gap: '10px', fontWeight: '800', fontSize: '0.9rem',
-                                                textTransform: 'uppercase', letterSpacing: '0.5px'
-                                            }}>
-                                                {statusInfo.icon}
-                                                {statusInfo.label}
+                                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '12px' }}>
+                                                <div style={{
+                                                    padding: '14px 24px', borderRadius: '20px',
+                                                    backgroundColor: `${statusInfo.color}08`,
+                                                    color: statusInfo.color, border: `1px solid ${statusInfo.color}20`,
+                                                    display: 'flex', alignItems: 'center',
+                                                    gap: '10px', fontWeight: '800', fontSize: '0.9rem',
+                                                    textTransform: 'uppercase', letterSpacing: '0.5px'
+                                                }}>
+                                                    {statusInfo.icon}
+                                                    {statusInfo.label}
+                                                </div>
+
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleDeleteBooking(booking.id);
+                                                    }}
+                                                    style={{
+                                                        padding: '10px 18px',
+                                                        backgroundColor: '#fff',
+                                                        color: '#ef4444',
+                                                        border: '1.5px solid #fee2e2',
+                                                        borderRadius: '14px',
+                                                        fontWeight: '700',
+                                                        cursor: 'pointer',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '8px',
+                                                        fontSize: '0.85rem',
+                                                        transition: 'all 0.2s'
+                                                    }}
+                                                    onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#fff1f1'; }}
+                                                    onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#fff'; }}
+                                                >
+                                                    <Trash2 size={16} /> Cancel Event
+                                                </button>
                                             </div>
                                         </motion.div>
                                     );

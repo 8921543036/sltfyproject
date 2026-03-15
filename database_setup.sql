@@ -38,6 +38,9 @@ create policy "Allow auth insert" on public.bookings for insert with check (auth
 -- Any logged-in user can update bookings (simplified for Admin access during dev)
 create policy "Allow dev management" on public.bookings for update using (auth.role() = 'authenticated');
 
+-- Allow individual users to delete their own bookings
+create policy "Allow individual delete" on public.bookings for delete using (auth.uid() = user_id);
+
 -- -------------------------------------------------------
 -- PART 5: STORAGE BUCKET POLICIES (FOR POSTERS)
 -- -------------------------------------------------------

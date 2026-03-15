@@ -91,7 +91,7 @@ const Navbar = () => {
                         Services
                     </a>
                     <Link to="/venues" className="nav-link">Venues</Link>
-                    <Link to="/permission-letter" className="nav-link">Permission</Link>
+                    <a href="https://connect-letterpad.vercel.app/" target="_blank" rel="noopener noreferrer" className="nav-link">Permission</a>
                     <Link to="/contact" className="nav-link">Contact</Link>
                     {localStorage.getItem('isAdmin') === 'true' && (
                         <Link to="/admin" className="nav-link" style={{ color: '#ff4444', fontWeight: 'bold' }}>Admin</Link>
@@ -247,7 +247,7 @@ const Navbar = () => {
                                 }
                             }}>Services</a>
                             <Link to="/venues" onClick={() => setIsMobileMenuOpen(false)}>Venues</Link>
-                            <Link to="/permission-letter" onClick={() => setIsMobileMenuOpen(false)}>Permission</Link>
+                            <a href="https://connect-letterpad.vercel.app/" target="_blank" rel="noopener noreferrer" onClick={() => setIsMobileMenuOpen(false)}>Permission</a>
                             <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
                             {localStorage.getItem('isAdmin') === 'true' && (
                                 <Link to="/admin" style={{ color: '#ff4444' }} onClick={() => setIsMobileMenuOpen(false)}>Admin</Link>
